@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, file_names, body_might_complete_normally_nullable
+// ignore_for_file: use_build_context_synchronously, file_names, body_might_complete_normally_nullable, unused_import, unused_local_variable
 
 import 'package:client/core/theme/app_pallete.dart';
 import 'package:client/features/auth/repositories/auth_remote_repository.dart';
@@ -20,10 +20,49 @@ class Validate extends StatefulWidget {
 class _ValidateState extends State<Validate> {
   final emailController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  String? errorMessage;
+
+  bool isExpanded = false;
+
   @override
   void dispose() {
     emailController.dispose();
     super.dispose();
+  }
+
+  Future<void> sendCode() async {
+    final email = emailController.text.trim();
+    if (formKey.currentState?.validate() ?? false) {
+      try {
+        final response =
+            await AuthRemoteRepository().Validate(email: emailController.text);
+        if (response.statusCode == 200) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SignupPage(email: email),
+            ),
+          );
+        }
+
+        if (response.statusCode == 400) {
+          setState(() {
+            errorMessage = 'This email already exists';
+          });
+          formKey.currentState?.validate();
+        } else {
+          setState(() {
+            errorMessage = null;
+            isExpanded = true;
+          });
+        }
+      } catch (error) {
+        setState(() {
+          errorMessage = 'An error occurred, please try again later.';
+        });
+        formKey.currentState?.validate();
+      }
+    }
   }
 
   @override
@@ -62,11 +101,27 @@ class _ValidateState extends State<Validate> {
                     ),
                   ),
                   const SizedBox(height: 15),
-                  CustomFieldEmail(
-                    hintText: 'Email',
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'EMAIL',
+                    ),
                     controller: emailController,
                     enabled: true,
-                    validator: (value) {},
+                    validator: (val) {
+                      if (val == null || val.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      if (errorMessage != null) {
+                        return errorMessage;
+                      } // عرض رسالة الخطأ
+                      // ignore: dead_code
+
+                      /*   if (val.contains(' ')) {
+                        return 'Email cannot contain spaces';
+                      } */
+
+                      return null;
+                    },
                   ),
                   const SizedBox(
                     height: 15,
@@ -75,8 +130,9 @@ class _ValidateState extends State<Validate> {
                     height: 20,
                   ),
                   Button(
-                    buttonText: 'Send Code',
-                    onTap: () async {
+                      buttonText: 'Send Code',
+                      onTap:
+                          sendCode /* () async {
                       await AuthRemoteRepository()
                           .Validate(email: emailController.text);
                       String email = emailController.text.trim();
@@ -88,8 +144,8 @@ class _ValidateState extends State<Validate> {
                           ),
                         );
                       }
-                    },
-                  ),
+                    }, */
+                      ),
                   const SizedBox(
                     height: 20,
                   ),
