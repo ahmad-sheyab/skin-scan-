@@ -8,7 +8,7 @@ import 'package:client/features/auth/view/widgets/button.dart';
 import 'package:client/features/auth/view/widgets/custom_field_data.dart';
 import 'package:flutter/material.dart';
 // ignore: unused_import
-import 'package:fpdart/fpdart.dart' as fpdart;
+import 'package:fpdart/fpdart.dart' as fpdart; 
 
 class SignupPage extends StatefulWidget {
   final String email;
