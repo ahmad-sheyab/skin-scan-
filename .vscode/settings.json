@@ -1,0 +1,6 @@
+{
+    "cmake.sourceDirectory": "/home/naruto/Documents/fastapi/musicapp/client/linux",
+    "python.autoComplete.extraPaths": [
+        "/home/naruto/Documents/fastapi/musicapp/server/venv/lib/python3.10/site-packages"
+    ]
+}
