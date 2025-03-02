@@ -1,8 +1,9 @@
-// ignore_for_file: non_constant_identifier_names, unused_local_variable, avoid_print
+// ignore_for_file: non_constant_identifier_names, unused_local_variable, avoid_print, unused_import
 
 import 'dart:convert';
 import 'package:client/core/failure/failure.dart';
 import 'package:client/features/auth/model/user_model.dart';
+import 'package:client/features/auth/view/pages/Validate.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,7 +21,7 @@ class AuthRemoteRepository {
     try {
       final response = await http.post(
         Uri.parse(
-          'https://8ede-212-34-13-105.ngrok-free.app/auth/',
+          'https://5c0d-212-34-22-101.ngrok-free.app/auth/',
         ),
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +77,7 @@ class AuthRemoteRepository {
   Future<http.Response> login(
       {required String email, required String password}) async {
     final response = await http.post(
-      Uri.parse('https://8ede-212-34-13-105.ngrok-free.app/auth/token'),
+      Uri.parse('https://5c0d-212-34-22-101.ngrok-free.app/auth/token'),
       headers: {
         'Content-Type':
             'application/x-www-form-urlencoded', // Correct content type
@@ -91,13 +92,13 @@ class AuthRemoteRepository {
     return response;
   }
 
-  Future<void> Validate({
+  /*  Future<void> Validate({
     required String email,
   }) async {
     try {
       final respone = await http.post(
         Uri.parse(
-          'https://8ede-212-34-13-105.ngrok-free.app/auth/validate',
+          'https://5c0d-212-34-22-101.ngrok-free.app/auth/validate',
         ),
         headers: {
           'Content-Type': 'application/json', // Correct content type
@@ -113,12 +114,28 @@ class AuthRemoteRepository {
     } catch (e) {
       print(e);
     }
+  } */
+  Future<http.Response> Validate({required String email}) async {
+    final response = await http.post(
+      Uri.parse('https://5c0d-212-34-22-101.ngrok-free.app/auth/validate'),
+      headers: {
+        'Content-Type': 'application/json', // Correct content type
+      },
+      body: jsonEncode(
+        {
+          'email': email, // Pass email as username
+        },
+      ),
+    );
+    print(response.statusCode);
+    print(response.body);
+    return response;
   }
 
   Future<http.Response> passValidate({required String email}) async {
     final response = await http.post(
         Uri.parse(
-            'https://8ede-212-34-13-105.ngrok-free.app/auth/PassValidate'),
+            'https://5c0d-212-34-22-101.ngrok-free.app/auth/PassValidate'),
         headers: {
           'Content-Type': 'application/json', // Correct content type
         },
@@ -138,7 +155,7 @@ class AuthRemoteRepository {
     try {
       final respone = await http.post(
         Uri.parse(
-          'https://8ede-212-34-13-105.ngrok-free.app/auth/validateCode',
+          'https://5c0d-212-34-22-101.ngrok-free.app/auth/validateCode',
         ),
         headers: {
           'Content-Type': 'application/json', // Correct content type
@@ -149,7 +166,7 @@ class AuthRemoteRepository {
             'validate_code': validate_code,
             'new_password': new_password
           },
-        ),
+        ), 
       );
       print(respone.statusCode);
       print(respone.body);
