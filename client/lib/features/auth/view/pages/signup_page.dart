@@ -81,7 +81,26 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Container(
+          padding: EdgeInsets.all(10.0),
+          child: ShaderMask(
+            shaderCallback: (bounds) => LinearGradient(
+              colors: [Pallete.gradient1, Pallete.gradient2],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ).createShader(bounds),
+            child: Text(
+              'Sign Up User',
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: Colors.white, // ضروري لتفعيل الـ Shader
+              ),
+            ),
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         // Wrap Column in SingleChildScrollView
         child: Padding(
@@ -91,24 +110,6 @@ class _SignupPageState extends State<SignupPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  padding: EdgeInsets.all(10.0),
-                  child: ShaderMask(
-                    shaderCallback: (bounds) => LinearGradient(
-                      colors: [Pallete.gradient1, Pallete.gradient2],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                    ).createShader(bounds),
-                    child: Text(
-                      'Sign Up',
-                      style: TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white, // ضروري لتفعيل الـ Shader
-                      ),
-                    ),
-                  ),
-                ),
                 const SizedBox(height: 30),
                 CustomFieldData(
                   hintText: 'Validation Code :',
@@ -149,24 +150,16 @@ class _SignupPageState extends State<SignupPage> {
                 const SizedBox(
                   height: 15,
                 ),
-                DropdownButtonFormField<String>(
-                  decoration: InputDecoration(labelText: 'Role'),
-                  value: selectedRole,
-                  items: ['DR', 'PH']
-                      .map((role) => DropdownMenuItem<String>(
-                            value: role,
-                            child: Text(role),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    selectedRole = value;
-                  },
-                  validator: (value) {
-                    if (value == null) {
-                      return 'Please select a role';
-                    }
-                    return null;
-                  },
+                TextFormField(
+                  controller: TextEditingController(text: 'User'),
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: 'Role',
+                    hintText: 'User',
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
                 ),
                 DropdownButtonFormField<String>(
                   decoration: InputDecoration(labelText: 'Gender'),
